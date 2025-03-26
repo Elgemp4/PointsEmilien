@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evaluations', function (Blueprint $table) {
+        Schema::create('student_evaluations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('max_points');
+            $table->foreignIdFor(Student::class);
+            $table->foreignIdFor(Evaluation::class);
+            $table->float('points');
             $table->timestamps();
         });
     }
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evaluations');
+        Schema::dropIfExists('student_evaluations');
     }
 };

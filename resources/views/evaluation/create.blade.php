@@ -2,9 +2,6 @@
 
 @section('title', 'Gestion des évaluations')
 @section('content')
-    @if(session('success'))
-    <p class="bg-green-500 text-white p-4 w-full text-center">{{ session('success') }}</p>
-    @endif
     <form action="" method="POST" class="mt-8">
         <fieldset class="flex flex-col border-2 gap-4 rounded-sm max-w-lg border-gray-300 p-4">
             <div>
