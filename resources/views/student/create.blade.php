@@ -22,10 +22,22 @@
         
     </form>
     <h1 class="text-3xl font-bold my-4">Listes des étudiants</h1>
-    <ul class="list-disc flex flex-col gap-2">
-        @foreach ($students as $student)
-            <li>{{$student->firstname." ".$student->lastname}}</li>
-        @endforeach
+    <div class="list-disc flex flex-col gap-2">
+        
+        @forelse ($students as $student)
+
+            <div class="flex justify-center  flex-col items-center border-[1px] rounded-md py-3 min-w-sm border-gray-300">
+                <h3 class="text-3xl mx-3">{{$student->firstname." ".$student->lastname}}</h3>
+                <hr class="border-[1px] border-gray-300 w-full my-4">
+                <form action="{{ route('student.delete', ['student' => $student->id]) }}" method="POST">
+                    @method("DELETE")
+                    @csrf
+                    <button class="bg-red-500 p-2 mx-3 rounded-md text-white" type="submit">Supprimer</button>
+                </form>
+            </div>
+        @empty
+            <p>Aucune évaluation n'a été trouvée</p>
+        @endforelse
         {{ $students->links() }}
-    </ul>
+    </div>
 @endsection

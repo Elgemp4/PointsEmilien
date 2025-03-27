@@ -13,6 +13,8 @@ Route::controller(StudentController::class)->name("student.")->prefix('/student'
 
     Route::post('create', 'createStudent');
 
+    Route::delete('{student}', 'deleteStudent')->name('delete');
+
     Route::get('/evaluation', 'showNote')->name('evaluation')->where(['id' => '[0-9]+']);
 
     Route::post('evaluation', 'createNote');
@@ -27,9 +29,11 @@ Route::controller(EvaluationController::class)->name('evaluation.')->prefix('/ev
 
     Route::post('create', 'createEvaluation');
 
-    Route::get('', 'listEvaluations')->name('list');
+    Route::delete('{evaluation}', 'deleteEvaluation')->name('delete')->where(['evaluation' => '[0-9]+']);
 
-    Route::get('{id}', 'showEvaluationById')->name('show')->where(['id' => '[0-9]+']);
+    Route::get('list', 'listEvaluations')->name('list');
+
+    Route::get('{evaluation}', 'showEvaluationById')->name('show')->where(['evaluation' => '[0-9]+']);
 });
 
 

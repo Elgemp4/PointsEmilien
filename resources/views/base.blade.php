@@ -18,9 +18,8 @@
     @if(session('success'))
     <p class="bg-green-500 text-white p-4 w-full text-center">{{ session('success') }}</p>
     @endif
-    <div class="flex flex-col  items-center">
+    <div class="flex flex-col max-w-lg m-auto items-center">
         @yield("content")
-
     </div>
 </body>
 </html>

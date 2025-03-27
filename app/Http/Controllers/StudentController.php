@@ -7,7 +7,7 @@ use App\Http\Requests\EvaluateStudentRequest;
 use App\Models\Evaluation;
 use App\Models\Student;
 use App\Models\StudentEvaluation;
-use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class StudentController extends Controller
 {
@@ -36,14 +36,31 @@ class StudentController extends Controller
             $studentEval->save();
         }
 
-        return redirect()->route('evaluation.show', ['id' => $evaluation->id])->with(['success' => "La note de $points / $evaluation->max_points a été attribuée à $student->firstname $student->lastname"]);
-    }
-
-    public function createNote() {
-
+        return redirect()->route('evaluation.show', ['evaluation' => $evaluation->id])->with(['success' => "La note de $points / $evaluation->max_points a été attribuée à $student->firstname $student->lastname"]);
     }
 
     public function showRanking() {
+        $students = Student::with('studentEvaluations')->get();
+        $students = Arr::map($students->toArray(), function($student) {
+            $total = 0;
+            foreach($student['student_evaluations'] as $studentEval){
+                $total += $studentEval['points'];
+            }
 
+            return ["total_points" => $total, 'student' => $student];
+        });
+        $students = Arr::sortDesc($students, function($student) {
+            return $student['total_points'];
+        });
+
+        $students = array_values($students);
+
+        return view('student.ranking', ['students' => $students]);
+    }
+
+    public function deleteStudent(Student $student) {
+        $student->delete();
+
+        return redirect()->route('student.create')->with(['success' => "L'étudiant \"$student->firstname $student->lastname\" a été supprimée avec succès !"]);
     }
 }

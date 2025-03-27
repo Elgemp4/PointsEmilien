@@ -18,11 +18,17 @@ class EvaluationController extends Controller
         return redirect()->route('evaluation.create')->with(['success' => "Evaluation \"$evaluation->name\" créée !"]);
     }
 
-    public function listEvaluations(Request $request) {
+    public function deleteEvaluation(Evaluation $evaluation){
+        $evaluation->delete();
+
+        return redirect()->route('evaluation.create')->with(['success' => "Evaluation \"$evaluation->name\" a été supprimée avec succès !"]);
+    }
+
+    public function listEvaluations() {
         return view("evaluation.list", ["evaluations" => Evaluation::paginate(25)]);
     }
 
-    public function showEvaluationById($id) {
-        return view("evaluation.show", ["evaluation" => Evaluation::findOrFail($id), 'students' => Student::paginate(25)]);
+    public function showEvaluationById(Evaluation $evaluation) {
+        return view("evaluation.show", ["evaluation" => $evaluation, 'students' => Student::paginate(25)]);
     }
 }
